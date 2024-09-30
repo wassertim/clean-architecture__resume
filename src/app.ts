@@ -16,7 +16,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Initialize repositories and services
 const resumeRepository = new ResumeRepository();
-const htmlGenerator = new HTMLGenerator(path.join(__dirname, 'templates', 'resume.hbs'));
+const htmlGenerator = new HTMLGenerator(
+  path.join(__dirname, 'templates', 'resume.hbs'),
+  path.join(__dirname, 'public', 'css', 'styles.css')
+);
 const pdfGenerator = new PDFGenerator();
 
 // Initialize use cases

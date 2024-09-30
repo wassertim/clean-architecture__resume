@@ -1,16 +1,24 @@
 import fs from 'fs/promises';
+import path from 'path';
 import Handlebars from 'handlebars';
 import { IHTMLGenerator } from '../../domain/interfaces/IHTMLGenerator';
 import { Resume } from '../../domain/entities/Resume';
 
 export class HTMLGenerator implements IHTMLGenerator {
   private template: HandlebarsTemplateDelegate | null = null;
+  private css: string | null = null;
 
-  constructor(private templatePath: string) {}
+  constructor(private templatePath: string, private cssPath: string) {}
 
   private async ensureTemplateLoaded(): Promise<void> {
     if (!this.template) {
       await this.loadTemplate();
+    }
+  }
+
+  private async ensureCSSLoaded(): Promise<void> {
+    if (!this.css) {
+      await this.loadCSS();
     }
   }
 
@@ -32,13 +40,28 @@ export class HTMLGenerator implements IHTMLGenerator {
     });
   }
 
+  private async loadCSS(): Promise<void> {
+    this.css = await fs.readFile(this.cssPath, 'utf-8');
+  }
+
   async generate(resume: Resume): Promise<string> {
     await this.ensureTemplateLoaded();
+    await this.ensureCSSLoaded();
 
     if (!this.template) {
       throw new Error('Failed to load the template');
     }
 
-    return this.template(resume);
+    if (!this.css) {
+      throw new Error('Failed to load the CSS');
+    }
+
+    const html = this.template(resume);
+    return this.injectCSS(html, this.css);
+  }
+
+  private injectCSS(html: string, css: string): string {
+    const styleTag = `<style>${css}</style>`;
+    return html.replace('</head>', `${styleTag}</head>`);
   }
 }

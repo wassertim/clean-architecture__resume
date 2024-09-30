@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="{{language}}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>{{pageTitle}}</title>
     <meta name="description" content="{{pageTitle}} - {{objective.description}}">
-    <link rel="stylesheet" href="/css/styles.css">    
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
+
 <body>
     <div class="container">
         <div class="top-controls">
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
             </button>
             <div class="language-toggle">
                 <a href="/en/" class="lang-link{{#if (eq language 'en')}} active{{/if}}">EN</a>
@@ -30,70 +35,74 @@
             <section class="experience">
                 <h2>{{experience.title}}</h2>
                 {{#each experience.items}}
-                    <div class="experience-item">
-                        <h3>{{position}}</h3>
-                        <p><strong>{{company}}</strong></p>
-                        <p>{{location}} | {{period}}</p>
-                        {{#if responsibilityAreas}}
-                            <h4>Responsibility Areas:</h4>
-                            <ul>
-                                {{#each responsibilityAreas}}
-                                    <li>{{this}}</li>
-                                {{/each}}
-                            </ul>
-                        {{/if}}
-                        {{#if focusAreas}}
-                            <h4>Focus Areas:</h4>
-                            <ul>
-                                {{#each focusAreas}}
-                                    <li>{{this}}</li>
-                                {{/each}}
-                            </ul>
-                        {{/if}}
-                    </div>
+                <div class="experience-item">
+                    <h3>{{position}}</h3>
+                    <p><strong>{{company}}</strong></p>
+                    <p>{{location}} | {{period}}</p>
+                    {{#if responsibilityAreas}}
+                    <h4>Responsibility Areas:</h4>
+                    <ul>
+                        {{#each responsibilityAreas}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                    {{/if}}
+                    {{#if focusAreas}}
+                    <h4>Focus Areas:</h4>
+                    <ul>
+                        {{#each focusAreas}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                    {{/if}}
+                </div>
                 {{/each}}
             </section>
 
             <section class="qualification-profile">
                 <h2>QUALIFIKATIONSPROFIL</h2>
                 <p>Legende:</p>
-                <ul>
+                <ul class="legend">
                     <li>{{qualificationProfile.legend.basic}}</li>
                     <li>{{qualificationProfile.legend.good}}</li>
                     <li>{{qualificationProfile.legend.veryGood}}</li>
                 </ul>
-                {{#each qualificationProfile.skillCategories}}
-                    <h3>{{title}}</h3>
-                    <ul>
+                <div class="qualification-grid">
+                    {{#each qualificationProfile.skillCategories}}
+                    <div class="qualification-category">
+                        <h3>{{title}}</h3>
+                    </div>
+                    <ul class="qualification-list">
                         {{#each skills}}
-                            <li>{{name}} ({{level}})</li>
+                        <li>{{name}} ({{level}})</li>
                         {{/each}}
                     </ul>
-                {{/each}}
+                    {{/each}}
+                </div>
             </section>
 
             <section class="education">
                 <h2>{{education.title}}</h2>
                 {{#each education.items}}
-                    <div class="education-item">
-                        <h3>{{title}}</h3>
-                        <p><strong>{{institution}}</strong> - {{location}}</p>
-                        <p>{{period}}</p>
-                    </div>
+                <div class="education-item">
+                    <h3>{{title}}</h3>
+                    <p><strong>{{institution}}</strong> - {{location}}</p>
+                    <p>{{period}}</p>
+                </div>
                 {{/each}}
             </section>
 
             {{#if furtherEducation}}
-                <section class="further-education">
-                    <h2>WEITERBILDUNG</h2>
-                    {{#each furtherEducation}}
-                        <div class="further-education-item">
-                            <h3>{{topic}}</h3>
-                            <p><strong>{{institution}}</strong></p>
-                            <p>{{period}}</p>
-                        </div>
-                    {{/each}}
-                </section>
+            <section class="further-education">
+                <h2>WEITERBILDUNG</h2>
+                {{#each furtherEducation}}
+                <div class="further-education-item">
+                    <h3>{{topic}}</h3>
+                    <p><strong>{{institution}}</strong></p>
+                    <p>{{period}}</p>
+                </div>
+                {{/each}}
+            </section>
             {{/if}}
 
             <section class="languages">
@@ -105,20 +114,21 @@
             </section>
 
             {{#if freeTime}}
-                <section class="hobbies">
-                    <h2>HOBBYS & INTERESSEN</h2>
-                    {{#each freeTime}}
-                        <h3>{{title}}</h3>
-                        <ul>
-                            {{#each bulletPoints}}
-                                <li>{{this}}</li>
-                            {{/each}}
-                        </ul>
+            <section class="hobbies">
+                <h2>HOBBYS & INTERESSEN</h2>
+                {{#each freeTime}}
+                <h3>{{title}}</h3>
+                <ul>
+                    {{#each bulletPoints}}
+                    <li>{{this}}</li>
                     {{/each}}
-                </section>
+                </ul>
+                {{/each}}
+            </section>
             {{/if}}
         </main>
     </div>
     <script src="/js/theme-toggle.js"></script>
 </body>
+
 </html>
