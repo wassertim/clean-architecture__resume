@@ -26,9 +26,7 @@
         </div>
 
         <header>
-            <h1>{{name}}</h1>
-            <h2>{{objective.title}}</h2>
-            <p>{{objective.description}}</p>
+            <h1>{{name}}</h1>            
         </header>
 
         <main>
@@ -37,20 +35,20 @@
                 {{#each experience.items}}
                 <div class="experience-item">
                     <h3>{{position}}</h3>
-                    <p><strong>{{company}}</strong></p>
-                    <p>{{location}} | {{period}}</p>
+                    <p>Firma: <strong>{{company}}</strong></p>
+                    <p>Zeitraum: <b>{{period}}</b></p>
                     {{#if responsibilityAreas}}
-                    <h4>Responsibility Areas:</h4>
+                    <h4>{{responsibilityAreas.title}}:</h4>
                     <ul>
-                        {{#each responsibilityAreas}}
+                        {{#each responsibilityAreas.items}}
                         <li>{{this}}</li>
                         {{/each}}
                     </ul>
                     {{/if}}
                     {{#if focusAreas}}
-                    <h4>Focus Areas:</h4>
+                    <h4>{{focusAreas.title}}:</h4>
                     <ul>
-                        {{#each focusAreas}}
+                        {{#each focusAreas.items}}
                         <li>{{this}}</li>
                         {{/each}}
                     </ul>

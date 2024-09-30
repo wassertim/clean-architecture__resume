@@ -19,14 +19,19 @@ export interface EducationSection {
   items: Education[];
 }
 
+export interface ExperienceArea {
+    title: string;
+    items: string[];
+}
+
 export interface Experience {
   company: string;
   position: string;
   location: string;
   period: string;
   bulletPoints: string[];
-  responsibilityAreas: string[];
-  focusAreas: string[];
+  responsibilityAreas: ExperienceArea;
+  focusAreas: ExperienceArea;
 }
 
 export interface ExperienceSection {
