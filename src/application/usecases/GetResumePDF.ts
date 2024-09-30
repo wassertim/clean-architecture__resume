@@ -1,5 +1,4 @@
-// src/application/usecases/GetResumePDF.ts
-import { IResumeRepository } from '../../domain/interfaces/IResumeRepository';
+import { GetResumeRequest, IResumeRepository } from '../../domain/interfaces/IResumeRepository';
 import { IHTMLGenerator } from '../../domain/interfaces/IHTMLGenerator';
 import { IPDFGenerator } from '../../domain/interfaces/IPDFGenerator';
 
@@ -10,21 +9,13 @@ export class GetResumePDF {
     private pdfGenerator: IPDFGenerator
   ) {}
 
-  async execute(): Promise<Uint8Array> {
-    try {
-      console.log('Fetching resume data...');
-      const resume = await this.resumeRepository.getResume();
-      
-      console.log('Generating HTML...');
-      const html = await this.htmlGenerator.generate(resume);
-      
-      console.log('Generating PDF...');
-      const pdf = await this.pdfGenerator.generateFromHTML(html);
-      
-      console.log('PDF generated successfully.');
+  async execute(getResumeRequest: GetResumeRequest): Promise<Uint8Array> {
+    try {      
+      const resume = await this.resumeRepository.getResume(getResumeRequest);            
+      const html = await this.htmlGenerator.generate(resume);      
+      const pdf = await this.pdfGenerator.generateFromHTML(html);      
       return pdf;
-    } catch (error) {
-      console.error('Error in GetResumePDF:', error);
+    } catch (error) {      
       throw error;
     }
   }

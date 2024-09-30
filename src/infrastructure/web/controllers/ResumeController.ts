@@ -7,7 +7,8 @@ export class ResumeController {
 
   async getWebView(req: Request, res: Response): Promise<void> {
     try {
-      const html = await this.resumeService.getResumeHTML();
+      const userId = parseInt(req.query.userId as string, 10);
+      const html = await this.resumeService.getResumeHTML({ userId });
       res.send(html);
     } catch (error) {
       console.error('Error generating resume HTML:', error);
@@ -17,7 +18,8 @@ export class ResumeController {
 
   async getPDF(req: Request, res: Response): Promise<void> {
     try {
-      const pdfArray = await this.resumeService.getResumePDF();
+      const userId = parseInt(req.query.userId as string, 10);
+      const pdfArray = await this.resumeService.getResumePDF({ userId });
       const pdfBuffer = Buffer.from(pdfArray);
       
       res.contentType('application/pdf');

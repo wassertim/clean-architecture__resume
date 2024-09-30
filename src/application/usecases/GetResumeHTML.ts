@@ -1,5 +1,5 @@
 // src/application/usecases/GetResumeHTML.ts
-import { IResumeRepository } from '../../domain/interfaces/IResumeRepository';
+import { GetResumeRequest, IResumeRepository } from '../../domain/interfaces/IResumeRepository';
 import { IHTMLGenerator } from '../../domain/interfaces/IHTMLGenerator';
 
 export class GetResumeHTML {
@@ -8,8 +8,8 @@ export class GetResumeHTML {
     private htmlGenerator: IHTMLGenerator
   ) {}
 
-  async execute(): Promise<string> {
-    const resume = await this.resumeRepository.getResume();
+  async execute(getResumeRequest: GetResumeRequest): Promise<string> {
+    const resume = await this.resumeRepository.getResume(getResumeRequest);
     return this.htmlGenerator.generate(resume);
   }
 }

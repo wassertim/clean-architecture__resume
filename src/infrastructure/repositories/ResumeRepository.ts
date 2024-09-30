@@ -1,38 +1,43 @@
-// src/infrastructure/repositories/ResumeRepository.ts
-import { IResumeRepository } from '../../domain/interfaces/IResumeRepository';
-import { Resume } from '../../domain/entities/Resume';
-import { Experience } from '../../domain/entities/Experience';
-import { Education } from '../../domain/entities/Education';
+import { promises as fs } from 'fs';
+import path from 'path';
+import { GetResumeRequest, IResumeRepository } from '../../domain/interfaces/IResumeRepository';
+import { Resume, Language, SocialLinks, Skill } from '../../domain/entities/Resume';
 
 export class ResumeRepository implements IResumeRepository {
-  async getResume(): Promise<Resume> {
-    // In a real application, this would likely come from a database
-    const experience: Experience[] = [
-      {
-        company: "Tech Co",
-        position: "Senior Developer",
-        startDate: "2018-01",
-        endDate: "Present",
-        description: "Implemented clean architecture principles in various projects."
-      }
-    ];
+  private readonly dataDir = path.join(__dirname, '..', '..', '..', 'data', 'users');
 
-    const education: Education[] = [
-      {
-        institution: "University of Code",
-        degree: "BS in Computer Science",
-        graduationDate: "2017-05"
-      }
-    ];
+  async getResume(getResumeRequest: GetResumeRequest): Promise<Resume> {
+    const { userId, language = 'en' } = getResumeRequest;
+    const userDir = path.join(this.dataDir, userId.toString());
 
-    return {
-      name: "John Doe",
-      email: "john@example.com",
-      phone: "(123) 456-7890",
-      summary: "Experienced software developer with a passion for clean architecture.",
-      experience,
-      education,
-      skills: ["TypeScript", "Node.js", "Clean Architecture", "Express"]
-    };
+    try {      
+      const commonData = await this.readJSONFile(path.join(userDir, 'common.json'));            
+      const resumeData = await this.readJSONFile(path.join(userDir, `resume.${language}.json`));
+      
+      const resume: Resume = {
+        ...resumeData,
+        language: language as Language,
+        socialLinks: commonData.socialLinks as SocialLinks,
+        skillsAssessment: {
+          title: resumeData.skillsAssesment.title,
+          items: commonData.skillsAssessment as Skill[]
+        }
+      };
+
+      return resume;
+    } catch (error) {
+      console.error(`Error reading resume data for user ${userId}:`, error);
+      throw new Error(`Failed to retrieve resume data for user ${userId}`);
+    }
+  }
+
+  private async readJSONFile(filePath: string): Promise<any> {
+    try {
+      const data = await fs.readFile(filePath, 'utf-8');
+      return JSON.parse(data);
+    } catch (error) {
+      console.error(`Error reading file ${filePath}:`, error);
+      throw error;
+    }
   }
 }

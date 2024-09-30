@@ -7,6 +7,7 @@ import { PDFGenerator } from './infrastructure/services/PDFGenerator';
 import { GetResumeHTML } from './application/usecases/GetResumeHTML';
 import { GetResumePDF } from './application/usecases/GetResumePDF';
 import { ResumeController } from './infrastructure/web/controllers/ResumeController';
+import { IResumeService } from './application/interfaces/IResumeService';
 
 const app = express();
 const port = 3000;
@@ -21,9 +22,9 @@ const getResumeHTML = new GetResumeHTML(resumeRepository, htmlGenerator);
 const getResumePDF = new GetResumePDF(resumeRepository, htmlGenerator, pdfGenerator);
 
 // Create a service that implements IResumeService
-const resumeService = {
-  getResumeHTML: () => getResumeHTML.execute(),
-  getResumePDF: () => getResumePDF.execute(),
+const resumeService: IResumeService = {
+  getResumeHTML: getResumeHTML.execute.bind(getResumeHTML),
+  getResumePDF: getResumePDF.execute.bind(getResumePDF),
 };
 
 // Initialize controller

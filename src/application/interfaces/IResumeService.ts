@@ -1,5 +1,7 @@
+import { GetResumeRequest } from '../../domain/interfaces/IResumeRepository';
+
 // src/application/interfaces/IResumeService.ts
 export interface IResumeService {
-    getResumeHTML(): Promise<string>;
-    getResumePDF(): Promise<Uint8Array>;
+    getResumeHTML(getResumeRequest: GetResumeRequest): Promise<string>;
+    getResumePDF(getResumeRequest: GetResumeRequest): Promise<Uint8Array>;
   }
