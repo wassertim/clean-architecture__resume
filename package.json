@@ -18,10 +18,12 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.0",
+    "handlebars": "^4.7.8",
     "puppeteer": "^23.4.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/handlebars": "^4.1.0",
     "@types/node": "^22.7.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"

@@ -1,4 +1,3 @@
-// src/app.ts
 import express from 'express';
 import path from 'path';
 import { ResumeRepository } from './infrastructure/repositories/ResumeRepository';
@@ -12,9 +11,12 @@ import { IResumeService } from './application/interfaces/IResumeService';
 const app = express();
 const port = 3000;
 
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Initialize repositories and services
 const resumeRepository = new ResumeRepository();
-const htmlGenerator = new HTMLGenerator(path.join(__dirname, 'templates', 'resume.html'));
+const htmlGenerator = new HTMLGenerator(path.join(__dirname, 'templates', 'resume.hbs'));
 const pdfGenerator = new PDFGenerator();
 
 // Initialize use cases
@@ -31,8 +33,8 @@ const resumeService: IResumeService = {
 const resumeController = new ResumeController(resumeService);
 
 // Set up routes
-app.get('/', (req, res) => resumeController.getWebView(req, res));
-app.get('/pdf', (req, res) => resumeController.getPDF(req, res));
+app.get('/users/:userId/:language', (req, res) => resumeController.getWebView(req, res));
+app.get('/users/:userId/:language/pdf', (req, res) => resumeController.getPDF(req, res));
 
 app.listen(port, () => {
   console.log(`Resume app listening at http://localhost:${port}`);

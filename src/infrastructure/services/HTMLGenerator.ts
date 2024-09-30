@@ -1,41 +1,44 @@
-// src/infrastructure/services/HTMLGenerator.ts
 import fs from 'fs/promises';
+import Handlebars from 'handlebars';
 import { IHTMLGenerator } from '../../domain/interfaces/IHTMLGenerator';
 import { Resume } from '../../domain/entities/Resume';
 
 export class HTMLGenerator implements IHTMLGenerator {
-  private template: string = '';
+  private template: HandlebarsTemplateDelegate | null = null;
 
   constructor(private templatePath: string) {}
 
-  async loadTemplate(): Promise<void> {
-    this.template = await fs.readFile(this.templatePath, 'utf-8');
-  }
-
-  async generate(resume: Resume): Promise<string> {
+  private async ensureTemplateLoaded(): Promise<void> {
     if (!this.template) {
       await this.loadTemplate();
     }
-
-    let html = this.template;
-    
-    // Simple replacement, in a real app you might use a proper templating engine
-    for (const [key, value] of Object.entries(resume)) {
-      html = html.replace(new RegExp(`{{${key}}}`, 'g'), this.formatValue(value));
-    }
-
-    return html;
   }
 
-  private formatValue(value: any): string {
-    if (Array.isArray(value)) {
-      return value.map(item => {
-        if (typeof item === 'object') {
-          return Object.entries(item).map(([k, v]) => `<strong>${k}:</strong> ${v}`).join('<br>');
-        }
-        return item;
-      }).join('<br>');
+  private async loadTemplate(): Promise<void> {
+    const templateContent = await fs.readFile(this.templatePath, 'utf-8');
+    this.template = Handlebars.compile(templateContent);
+
+    // Register helper functions
+    Handlebars.registerHelper('eq', function(arg1, arg2) {
+      return arg1 === arg2;
+    });
+
+    Handlebars.registerHelper('multiply', function(num1, num2) {
+      return num1 * num2;
+    });
+
+    Handlebars.registerHelper('join', function(array, separator) {
+      return array.join(separator);
+    });
+  }
+
+  async generate(resume: Resume): Promise<string> {
+    await this.ensureTemplateLoaded();
+
+    if (!this.template) {
+      throw new Error('Failed to load the template');
     }
-    return String(value);
+
+    return this.template(resume);
   }
 }

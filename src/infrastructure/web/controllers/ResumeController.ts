@@ -1,4 +1,3 @@
-// src/infrastructure/web/controllers/ResumeController.ts
 import { Request, Response } from 'express';
 import { IResumeService } from '../../../application/interfaces/IResumeService';
 
@@ -7,8 +6,15 @@ export class ResumeController {
 
   async getWebView(req: Request, res: Response): Promise<void> {
     try {
-      const userId = parseInt(req.query.userId as string, 10);
-      const html = await this.resumeService.getResumeHTML({ userId });
+      const userId = parseInt(req.params.userId, 10);
+      const language = req.params.language as 'en' | 'de';
+
+      if (isNaN(userId) || (language !== 'en' && language !== 'de')) {
+        res.status(400).send('Invalid user ID or language');
+        return;
+      }
+
+      const html = await this.resumeService.getResumeHTML({ userId, language });
       res.send(html);
     } catch (error) {
       console.error('Error generating resume HTML:', error);
@@ -18,8 +24,15 @@ export class ResumeController {
 
   async getPDF(req: Request, res: Response): Promise<void> {
     try {
-      const userId = parseInt(req.query.userId as string, 10);
-      const pdfArray = await this.resumeService.getResumePDF({ userId });
+      const userId = parseInt(req.params.userId, 10);
+      const language = req.params.language as 'en' | 'de';
+
+      if (isNaN(userId) || (language !== 'en' && language !== 'de')) {
+        res.status(400).send('Invalid user ID or language');
+        return;
+      }
+
+      const pdfArray = await this.resumeService.getResumePDF({ userId, language });
       const pdfBuffer = Buffer.from(pdfArray);
       
       res.contentType('application/pdf');
