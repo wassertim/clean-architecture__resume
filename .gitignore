@@ -1,3 +1,5 @@
 node_modules
 .DS_Store
 data
+src/public/css/*.css
+src/public/css/*.map
