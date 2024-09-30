@@ -2,10 +2,21 @@
 
 export type Language = 'en' | 'de';
 
+export interface Objective {
+  title: string;
+  description: string;
+}
+
 export interface Education {
+  title: string;
   institution: string;
-  major: string;
   location: string;
+  period: string;
+}
+
+export interface EducationSection {
+  title: string;
+  items: Education[];
 }
 
 export interface Experience {
@@ -14,48 +25,8 @@ export interface Experience {
   location: string;
   period: string;
   bulletPoints: string[];
-}
-
-export interface Project {
-  name: string;
-  company: string;
-  description: string;
-  technologies: string[];
-  role: string;
-  year: string;
-}
-
-export interface Skill {
-  name: string;
-  level: number;
-}
-
-export interface SocialLinks {
-  xing: string;
-  linkedin: string;
-  github: string;
-}
-
-export interface SkillCategory {
-  title: string;
-  description: string;
-  items: string[];
-}
-
-export interface Objective {
-  title: string;
-  description: string;
-}
-
-export interface EducationSection {
-  title: string;
-  items: Education[];
-}
-
-export interface SkillsSection {
-  title: string;
-  intro: string;
-  categories: SkillCategory[];
+  responsibilityAreas: string[];
+  focusAreas: string[];
 }
 
 export interface ExperienceSection {
@@ -63,19 +34,42 @@ export interface ExperienceSection {
   items: Experience[];
 }
 
-export interface ProjectsSection {
-  title: string;
-  items: Project[];
+export interface DetailedEducation {
+  type: 'university' | 'highSchool' | 'elementarySchool';
+  institution: string;
+  major: string;
+  location: string;
+  year: string;
 }
 
-export interface SkillsAssessmentSection {
-  title: string;
-  items: Skill[];
+export interface FurtherEducation {
+  topic: string;
+  institution: string;
+  period: string;
 }
 
-export interface HobbiesSection {
+export interface FreeTimeActivity {
   title: string;
-  description: string;
+  bulletPoints: string[];
+}
+
+export interface QualificationSkill {
+  name: string;
+  level: 'basic' | 'good' | 'veryGood';
+}
+
+export interface QualificationSkillCategory {
+  title: string;
+  skills: QualificationSkill[];
+}
+
+export interface QualificationProfile {
+  legend: {
+    basic: string;
+    good: string;
+    veryGood: string;
+  };
+  skillCategories: QualificationSkillCategory[];
 }
 
 export interface Resume {
@@ -84,10 +78,9 @@ export interface Resume {
   name: string;
   objective: Objective;
   education: EducationSection;
-  skills: SkillsSection;
   experience: ExperienceSection;
-  projects: ProjectsSection;
-  skillsAssessment: SkillsAssessmentSection;
-  hobbies: HobbiesSection;
-  socialLinks: SocialLinks;
+  qualificationProfile: QualificationProfile;
+  detailedEducation: DetailedEducation[];
+  furtherEducation: FurtherEducation[];
+  freeTime: FreeTimeActivity[];
 }

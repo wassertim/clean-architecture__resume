@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import { GetResumeRequest, IResumeRepository } from '../../domain/interfaces/IResumeRepository';
-import { Resume, Language, SocialLinks, Skill } from '../../domain/entities/Resume';
+import { Resume, Language } from '../../domain/entities/Resume';
 
 export class ResumeRepository implements IResumeRepository {
   private readonly dataDir = path.join(__dirname, '..', '..', '..', 'data', 'users');
@@ -10,18 +10,21 @@ export class ResumeRepository implements IResumeRepository {
     const { userId, language = 'en' } = getResumeRequest;
     const userDir = path.join(this.dataDir, userId.toString());
 
-    try {      
-      const commonData = await this.readJSONFile(path.join(userDir, 'common.json'));            
+    try {
       const resumeData = await this.readJSONFile(path.join(userDir, `resume.${language}.json`));
       
+      // Ensure the loaded data conforms to the Resume interface
       const resume: Resume = {
-        ...resumeData,
         language: language as Language,
-        socialLinks: commonData.socialLinks as SocialLinks,
-        skillsAssessment: {
-          title: resumeData.skillsAssesment.title,
-          items: commonData.skillsAssessment as Skill[]
-        }
+        pageTitle: resumeData.pageTitle,
+        name: resumeData.name,
+        objective: resumeData.objective,
+        education: resumeData.education,
+        experience: resumeData.experience,
+        qualificationProfile: resumeData.qualificationProfile,
+        detailedEducation: resumeData.detailedEducation,
+        furtherEducation: resumeData.furtherEducation,
+        freeTime: resumeData.freeTime,
       };
 
       return resume;
