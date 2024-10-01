@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>{{pageTitle}}</title>
-    <meta name="description" content="{{pageTitle}} - {{objective.description}}">
-    <link rel="stylesheet" href="/css/styles.css">
+    <meta name="description" content="{{pageTitle}} - {{objective.description}}">    
 </head>
 
 <body>
@@ -72,7 +71,7 @@
                     </div>
                     <ul class="qualification-list">
                         {{#each skills}}
-                        <li>{{name}} ({{level}})</li>
+                        <li>{{name}} ({{level}}) {{yearsOfExperience}}</li>
                         {{/each}}
                     </ul>
                     {{/each}}

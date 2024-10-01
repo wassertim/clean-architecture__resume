@@ -60,7 +60,8 @@ export interface FreeTimeActivity {
 
 export interface QualificationSkill {
   name: string;
-  level: 'basic' | 'good' | 'veryGood';
+  level: '+' | '++' | '+++';
+  yearsOfExperience: string;
 }
 
 export interface QualificationSkillCategory {
