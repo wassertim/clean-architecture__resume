@@ -44,13 +44,8 @@
                         {{/each}}
                     </ul>
                     {{/if}}
-                    {{#if focusAreas}}
-                    <h4>{{focusAreas.title}}:</h4>
-                    <ul>
-                        {{#each focusAreas.items}}
-                        <li>{{this}}</li>
-                        {{/each}}
-                    </ul>
+                    {{#if focusAreas}}                    
+                    <p>{{focusAreas.title}}: <strong>{{join focusAreas.items ", "}}</strong></p>
                     {{/if}}
                 </div>
                 {{/each}}
@@ -58,12 +53,7 @@
 
             <section class="qualification-profile">
                 <h2>QUALIFIKATIONSPROFIL</h2>
-                <p>Legende:</p>
-                <ul class="legend">
-                    <li>{{qualificationProfile.legend.basic}}</li>
-                    <li>{{qualificationProfile.legend.good}}</li>
-                    <li>{{qualificationProfile.legend.veryGood}}</li>
-                </ul>
+                <p><b>Legende:</b> {{qualificationProfile.legend.basic}}, {{qualificationProfile.legend.good}}, {{qualificationProfile.legend.veryGood}}</p>                                    
                 <div class="qualification-grid">
                     {{#each qualificationProfile.skillCategories}}
                     <div class="qualification-category">
@@ -95,8 +85,7 @@
                 {{#each furtherEducation}}
                 <div class="further-education-item">
                     <h3>{{topic}}</h3>
-                    <p><strong>{{institution}}</strong></p>
-                    <p>{{period}}</p>
+                    <div><strong>{{institution}} - </strong> {{period}}</div>                    
                 </div>
                 {{/each}}
             </section>
